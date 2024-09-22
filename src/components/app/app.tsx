@@ -16,10 +16,26 @@ interface Data {
 export function App() {
   const [visibleItems, setVisibleItems] = useState(1);
 
+  // Extended data with more items for added interest
   const data: Array<Data> = [
     {
       name: 'Observable Universe',
       size: 93e9 * 9.461e15, // 93 billion light-years in meters
+      unit: 'meters',
+    },
+    {
+      name: 'Laniakea Supercluster',
+      size: 500e6 * 9.461e15, // 500 million light-years in meters
+      unit: 'meters',
+    },
+    {
+      name: 'Virgo Supercluster',
+      size: 110e6 * 9.461e15, // 110 million light-years in meters
+      unit: 'meters',
+    },
+    {
+      name: 'Local Group',
+      size: 10e6 * 9.461e15, // 10 million light-years in meters
       unit: 'meters',
     },
     {
@@ -38,8 +54,18 @@ export function App() {
       unit: 'meters',
     },
     {
+      name: 'Jupiter',
+      size: 139820e3 / 2, // Radius in meters
+      unit: 'meters',
+    },
+    {
       name: 'Earth',
       size: 12742e3 / 2, // Radius in meters
+      unit: 'meters',
+    },
+    {
+      name: 'Moon',
+      size: 3474.8e3 / 2, // Radius in meters
       unit: 'meters',
     },
     {
@@ -48,18 +74,18 @@ export function App() {
       unit: 'meters',
     },
     {
-      name: 'Hill',
-      size: 500, // 500 meters
+      name: 'Blue Whale',
+      size: 30, // 30 meters
       unit: 'meters',
     },
     {
-      name: 'House',
-      size: 10, // 10 meters
+      name: 'Human',
+      size: 1.7, // Average human height in meters
       unit: 'meters',
     },
     {
-      name: 'Person',
-      size: 2, // 2 meters
+      name: 'Ant',
+      size: 5e-3, // 5 millimeters in meters
       unit: 'meters',
     },
     {
@@ -68,8 +94,13 @@ export function App() {
       unit: 'meters',
     },
     {
-      name: 'Molecule',
-      size: 1e-9, // 1 nanometer in meters
+      name: 'DNA',
+      size: 2e-9, // 2 nanometers in meters
+      unit: 'meters',
+    },
+    {
+      name: 'Glucose Molecule',
+      size: 0.9e-9, // 0.9 nanometers in meters
       unit: 'meters',
     },
     {
@@ -78,24 +109,30 @@ export function App() {
       unit: 'meters',
     },
     {
-      name: 'Proton/Neutron',
-      size: 1e-15, // 1 femtometer in meters
+      name: 'Proton',
+      size: 1.6e-15, // 1.6 femtometers in meters
       unit: 'meters',
     },
     {
-      name: 'Electron',
-      size: 1e-18, // Effectively point-like
+      name: 'Quark',
+      size: 1e-19, // Approximate size
       unit: 'meters',
     },
   ];
 
+  // Sorting the data from biggest to smallest
+  function sortData(data: Data[]): Data[] {
+    return data.slice().sort((a, b) => b.size - a.size);
+  }
+
+  const sortedData = sortData(data);
+
   useEffect(() => {
-    if (visibleItems < data.length) {
+    if (visibleItems < sortedData.length) {
       const func = async () => {
         let newIndex = 0;
         setVisibleItems(prev => {
           newIndex = prev;
-
           return prev + 1;
         });
 
@@ -111,18 +148,18 @@ export function App() {
 
       return () => clearTimeout(timeout);
     }
-  }, [visibleItems, data.length]);
+  }, [visibleItems, sortedData.length]);
 
   return (
     <Container>
       <div className={styles.proportions}>
         <AnimatePresence>
-          {data.slice(0, visibleItems - 1).map((item, index) => (
+          {sortedData.slice(0, visibleItems - 1).map((item, index) => (
             <Proportion
               bigger={item}
               index={index}
               key={index}
-              smaller={data[index + 1]}
+              smaller={sortedData[index + 1]}
             />
           ))}
         </AnimatePresence>
@@ -180,10 +217,7 @@ function formatSize(sizeInMeters: number): string {
       minimumFractionDigits: 2,
     })} fm`;
   } else {
-    return `${sizeInMeters.toLocaleString(undefined, {
-      maximumFractionDigits: 2,
-      minimumFractionDigits: 2,
-    })} meters`;
+    return `${sizeInMeters.toExponential(2)} meters`;
   }
 }
 
