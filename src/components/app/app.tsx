@@ -36,37 +36,42 @@ const data: Array<Data> = [
   },
   {
     name: 'Solar System',
-    size: 1.5e13, // ~1.5 x 10^13 meters
+    size: 1.5e13, // Approximate diameter of the Solar System in meters
     unit: 'meters',
   },
   {
     name: 'Sun',
-    size: 1.39e9, // ~1.39 million kilometers in meters
+    size: 1.39e9, // Diameter of the Sun in meters
     unit: 'meters',
   },
   {
     name: 'Jupiter',
-    size: 139820e3 / 2, // Radius in meters
+    size: 139820e3, // Diameter of Jupiter in meters
     unit: 'meters',
   },
   {
     name: 'Earth',
-    size: 12742e3 / 2, // Radius in meters
+    size: 12742e3, // Diameter of Earth in meters
     unit: 'meters',
   },
   {
     name: 'Moon',
-    size: 3474.8e3 / 2, // Radius in meters
+    size: 3474.8e3, // Diameter of the Moon in meters
+    unit: 'meters',
+  },
+  {
+    name: 'City',
+    size: 50e3, // Approximate size of a large city in meters
     unit: 'meters',
   },
   {
     name: 'Mount Everest',
-    size: 8.8e3, // 8.8 kilometers in meters
+    size: 8.848e3, // Height of Mount Everest in meters
     unit: 'meters',
   },
   {
     name: 'Blue Whale',
-    size: 30, // 30 meters
+    size: 30, // Approximate length of a blue whale in meters
     unit: 'meters',
   },
   {
@@ -75,8 +80,23 @@ const data: Array<Data> = [
     unit: 'meters',
   },
   {
+    name: 'Grain of Rice',
+    size: 7e-3, // 7 millimeters in meters
+    unit: 'meters',
+  },
+  {
     name: 'Ant',
     size: 5e-3, // 5 millimeters in meters
+    unit: 'meters',
+  },
+  {
+    name: 'Human Hair',
+    size: 75e-6, // 75 micrometers in meters
+    unit: 'meters',
+  },
+  {
+    name: 'Red Blood Cell',
+    size: 8e-6, // 8 micrometers in meters
     unit: 'meters',
   },
   {
@@ -85,13 +105,28 @@ const data: Array<Data> = [
     unit: 'meters',
   },
   {
+    name: 'Virus',
+    size: 100e-9, // 100 nanometers in meters
+    unit: 'meters',
+  },
+  {
     name: 'DNA',
     size: 2e-9, // 2 nanometers in meters
     unit: 'meters',
   },
   {
+    name: 'Water Molecule',
+    size: 0.275e-9, // 0.275 nanometers in meters
+    unit: 'meters',
+  },
+  {
     name: 'Glucose Molecule',
     size: 0.9e-9, // 0.9 nanometers in meters
+    unit: 'meters',
+  },
+  {
+    name: 'Carbon Atom',
+    size: 70e-12, // 70 picometers in meters
     unit: 'meters',
   },
   {
@@ -105,8 +140,18 @@ const data: Array<Data> = [
     unit: 'meters',
   },
   {
+    name: 'Neutrino',
+    size: 1e-24, // Estimated upper limit of neutrino size in meters
+    unit: 'meters',
+  },
+  {
     name: 'Quark',
-    size: 1e-19, // Approximate size
+    size: 1e-19, // Approximate size of a quark in meters
+    unit: 'meters',
+  },
+  {
+    name: 'Planck Length',
+    size: 1.616e-35, // Planck length in meters
     unit: 'meters',
   },
 ];
@@ -177,7 +222,7 @@ export const App: React.FC = () => {
   const maxLogSize = Math.max(...logSizes);
 
   // Define the scale height in pixels
-  const scaleHeight = 2400;
+  const scaleHeight = 3800;
 
   // Generate major ticks at integer powers of ten within the range
   const minPower = Math.floor(minLogSize);

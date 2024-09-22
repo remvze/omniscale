@@ -45,6 +45,7 @@
 
 .label {
   font-size: var(--font-xsm);
+  text-shadow: 0 4px 3px var(--color-neutral-50);
 
   & span {
     font-family: var(--font-mono);
