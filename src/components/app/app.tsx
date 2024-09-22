@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { cn } from '@/helpers/styles';
+import { waitUntil } from '@/helpers/wait';
 import { Container } from '../container';
 
 import styles from './app.module.css';
@@ -90,9 +91,24 @@ export function App() {
 
   useEffect(() => {
     if (visibleItems < data.length) {
-      const timeout = setTimeout(() => {
-        setVisibleItems(prev => prev + 1);
-      }, 1500); // Adjust the delay as needed
+      const func = async () => {
+        let newIndex = 0;
+        setVisibleItems(prev => {
+          newIndex = prev;
+
+          return prev + 1;
+        });
+
+        await waitUntil(
+          () => !!document.getElementById(`item-${newIndex}`),
+          50,
+        );
+
+        document.getElementById(`item-${newIndex}`)?.scrollIntoView();
+      };
+
+      const timeout = setTimeout(func, 1500);
+
       return () => clearTimeout(timeout);
     }
   }, [visibleItems, data.length]);
@@ -177,13 +193,14 @@ interface ProportionProps {
   smaller: Data;
 }
 
-function Proportion({ bigger, smaller }: ProportionProps) {
+function Proportion({ bigger, index, smaller }: ProportionProps) {
   const percentage = (smaller.size / bigger.size) * 100;
 
   return (
     <motion.div
       animate={{ filter: 'blur(0)', opacity: 1, scale: 1 }}
       className={styles.proportion}
+      id={`item-${index}`}
       initial={{ filter: 'blur(10px)', opacity: 0, scale: 1.1 }}
       transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
