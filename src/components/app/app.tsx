@@ -7,7 +7,7 @@ interface TimelineEvent {
   year: number;
 }
 
-const timelineOne: Array<TimelineEvent> = [
+const humanTimeline: Array<TimelineEvent> = [
   {
     label: 'Today',
     year: 0,
@@ -100,9 +100,6 @@ const timelineOne: Array<TimelineEvent> = [
     label: 'End of the Ice Age',
     year: -11700,
   },
-];
-
-const timelineTwo: Array<TimelineEvent> = [
   {
     label: 'Neanderthals Go Extinct',
     year: -40000,
@@ -111,6 +108,9 @@ const timelineTwo: Array<TimelineEvent> = [
     label: 'First Homo sapiens',
     year: -300000,
   },
+];
+
+const preHumanTimeline: Array<TimelineEvent> = [
   {
     label: 'Homo Erectus Emerges',
     year: -2000000,
@@ -173,17 +173,17 @@ export function App() {
   return (
     <Container>
       <Timeline
-        events={timelineOne}
+        events={humanTimeline}
         scale={0.25}
         scaleText="1 Year = 4 Pixels"
-        title="First Timeline"
+        title="Human Timeline"
       />
 
       <Timeline
-        events={timelineTwo}
+        events={preHumanTimeline}
         scale={10_000}
         scaleText="10,000 Years = 1 Pixel"
-        title="Second Timeline"
+        title="Pre-Human Timeline"
       />
     </Container>
   );
