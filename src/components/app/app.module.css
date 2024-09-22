@@ -23,7 +23,7 @@
       text-align: right;
     }
 
-    & span {
+    & .num {
       font-family: var(--font-mono);
       font-size: var(--font-2xsm);
       font-weight: 400;

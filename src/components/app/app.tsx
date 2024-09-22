@@ -205,7 +205,21 @@ function Proportion({ bigger, index, smaller }: ProportionProps) {
       transition={{ duration: 0.5, ease: 'easeInOut' }}
     >
       <p className={cn(styles.name, styles.biggerName)}>
-        {bigger.name} <span>{formatSize(bigger.size)}</span>
+        <motion.span
+          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: 20 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          {bigger.name}
+        </motion.span>
+        <motion.span
+          animate={{ opacity: 1 }}
+          className={styles.num}
+          initial={{ opacity: 0 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          {formatSize(bigger.size)}
+        </motion.span>
       </p>
       <div className={styles.line}>
         <motion.div
@@ -222,12 +236,19 @@ function Proportion({ bigger, index, smaller }: ProportionProps) {
       <p className={cn(styles.name, styles.smallerName)}>
         <motion.span
           animate={{ opacity: 1 }}
+          className={styles.num}
           initial={{ opacity: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
           % {parseFloat(percentage.toPrecision(1))}
         </motion.span>{' '}
-        {smaller.name}
+        <motion.span
+          animate={{ opacity: 1, x: 0 }}
+          initial={{ opacity: 0, x: -20 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+        >
+          {smaller.name}
+        </motion.span>
       </p>
     </motion.div>
   );
