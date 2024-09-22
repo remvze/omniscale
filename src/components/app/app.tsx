@@ -10,95 +10,147 @@ interface TimelineEvent {
 const humanTimeline: Array<TimelineEvent> = [
   {
     label: 'Today',
-    year: 0,
+    year: 2024,
+  },
+  {
+    label: 'COVID-19 Pandemic',
+    year: 2020,
+  },
+  {
+    label: 'Human Genome Project Completed',
+    year: 2003,
+  },
+  {
+    label: 'Fall of the Berlin Wall',
+    year: 1989,
   },
   {
     label: 'Invention of the Internet',
-    year: -50,
+    year: 1969,
   },
   {
     label: 'First Human on the Moon (Apollo 11)',
-    year: -55,
+    year: 1969,
+  },
+  {
+    label: 'Discovery of DNA Structure',
+    year: 1953,
+  },
+  {
+    label: 'Founding of the United Nations',
+    year: 1945,
   },
   {
     label: 'World War II Ends',
-    year: -79,
+    year: 1945,
   },
   {
     label: 'World War I Ends',
-    year: -106,
+    year: 1918,
+  },
+  {
+    label: 'Russian Revolution',
+    year: 1917,
+  },
+  {
+    label: 'Discovery of Penicillin',
+    year: 1928,
+  },
+  {
+    label: 'Invention of the Radio',
+    year: 1895,
   },
   {
     label: 'First Flight by Wright Brothers',
-    year: -120,
+    year: 1903,
+  },
+  {
+    label: 'Invention of the Telephone',
+    year: 1876,
   },
   {
     label: 'Electric Light Bulb Invented by Edison',
-    year: -145,
+    year: 1879,
   },
   {
     label: 'American Civil War Ends',
-    year: -159,
+    year: 1865,
+  },
+  {
+    label: 'French Revolution',
+    year: 1789,
+  },
+  {
+    label: 'Signing of the Declaration of Independence',
+    year: 1776,
   },
   {
     label: 'Industrial Revolution Begins',
-    year: -264,
+    year: 1760,
   },
   {
     label: 'Discovery of Electricity by Benjamin Franklin',
-    year: -272,
+    year: 1752,
   },
   {
     label: 'Scientific Revolution (Copernicus, Newton, Galileo)',
-    year: -424,
+    year: 1543,
+  },
+  {
+    label: 'Protestant Reformation',
+    year: 1517,
   },
   {
     label: 'Renaissance Begins',
-    year: -724,
-  },
-  {
-    label: 'Printing Press Invented by Gutenberg',
-    year: -584,
-  },
-  {
-    label: 'Columbus Discovers Americas',
-    year: -532,
+    year: 1300,
   },
   {
     label: 'Fall of Constantinople (End of Byzantine Empire)',
-    year: -571,
+    year: 1453,
+  },
+  {
+    label: 'Printing Press Invented by Gutenberg',
+    year: 1440,
+  },
+  {
+    label: 'Columbus Discovers Americas',
+    year: 1492,
+  },
+  {
+    label: 'Signing of the Magna Carta',
+    year: 1215,
   },
   {
     label: 'Middle Ages Begin (Fall of Roman Empire)',
-    year: -1548,
+    year: 476,
   },
   {
     label: 'Islamic Golden Age',
-    year: -1224,
+    year: 800,
   },
   {
     label: 'Birth of Ancient Greek Civilization',
-    year: -2800,
+    year: -800,
   },
   {
     label: 'First Writing Systems (Sumerians)',
-    year: -5424,
+    year: -3400,
   },
   {
     label: 'First Human Civilization (Mesopotamia)',
-    year: -6024,
+    year: -4000,
   },
   {
     label: 'Stonehenge Construction',
-    year: -5024,
+    year: -3000,
   },
   {
     label: 'Agriculture Begins (Neolithic Revolution)',
-    year: -12024,
+    year: -10000,
   },
   {
     label: 'End of the Ice Age',
-    year: -11700,
+    year: -9600,
   },
   {
     label: 'Neanderthals Go Extinct',
@@ -110,80 +162,14 @@ const humanTimeline: Array<TimelineEvent> = [
   },
 ];
 
-const preHumanTimeline: Array<TimelineEvent> = [
-  {
-    label: 'Homo Erectus Emerges',
-    year: -2000000,
-  },
-  {
-    label: 'Dinosaurs Go Extinct (End of Cretaceous Period)',
-    year: -66000000,
-  },
-  {
-    label: 'First Flowering Plants',
-    year: -140000000,
-  },
-  {
-    label: 'First Birds Appear',
-    year: -150000000,
-  },
-  {
-    label: 'First Mammals Evolve',
-    year: -200000000,
-  },
-  {
-    label: 'Dinosaurs Dominate (Mesozoic Era)',
-    year: -252000000,
-  },
-  {
-    label: 'First Land Animals',
-    year: -375000000,
-  },
-  {
-    label: 'First Vertebrates Appear',
-    year: -525000000,
-  },
-  {
-    label: 'Cambrian Explosion (Rapid Diversity of Life)',
-    year: -541000000,
-  },
-  {
-    label: 'First Multicellular Life',
-    year: -1000000000,
-  },
-  {
-    label: 'First Single-Celled Life (Bacteria)',
-    year: -3800000000,
-  },
-  {
-    label: 'Earth Forms',
-    year: -4500000000,
-  },
-  {
-    label: 'Sun Forms',
-    year: -4600000000,
-  },
-  {
-    label: 'Big Bang (Universe Begins)',
-    year: -13780000000,
-  },
-];
-
 export function App() {
   return (
     <Container>
       <Timeline
         events={humanTimeline}
-        scale={0.25}
-        scaleText="1 Year = 4 Pixels"
+        scale={0.1}
+        scaleText="1 Year = 10 Pixels"
         title="Human Timeline"
-      />
-
-      <Timeline
-        events={preHumanTimeline}
-        scale={10_000}
-        scaleText="10,000 Years = 1 Pixel"
-        title="Pre-Human Timeline"
       />
     </Container>
   );
