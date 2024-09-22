@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Container } from '../container';
 
 import styles from './app.module.css'; // We'll define styles here
+import { cn } from '@/helpers/styles';
 
 type Data = {
   name: string;
@@ -287,8 +288,58 @@ export const App: React.FC = () => {
     return minorTicks;
   }
 
+  const [firstSelectedItem, setFirstSelectedItem] = useState<Data | null>(null);
+  const [secondSelectedItem, setSecondSelectedItem] = useState<Data | null>(
+    null,
+  );
+
+  // Function to handle selection
+  const handleItemClick = (item: Data) => {
+    if (!firstSelectedItem) {
+      setFirstSelectedItem(item);
+    } else if (!secondSelectedItem && item !== firstSelectedItem) {
+      setSecondSelectedItem(item);
+    } else {
+      // Reset selection if the same item is clicked again or both items are already selected
+      setFirstSelectedItem(item);
+      setSecondSelectedItem(null);
+    }
+  };
+
+  const calculateProportion = () => {
+    if (firstSelectedItem && secondSelectedItem) {
+      const size1 = firstSelectedItem.size;
+      const size2 = secondSelectedItem.size;
+
+      const ratio = size1 / size2;
+      const inverseRatio = size2 / size1;
+
+      return {
+        inverseRatio,
+        largerItem: size1 >= size2 ? firstSelectedItem : secondSelectedItem,
+        ratio,
+        smallerItem: size1 < size2 ? firstSelectedItem : secondSelectedItem,
+      };
+    }
+    return null;
+  };
+
   return (
     <Container>
+      {firstSelectedItem && secondSelectedItem && (
+        <div className={styles.proportionDisplay}>
+          <p>
+            {calculateProportion()?.largerItem.name} is{' '}
+            <span>
+              {calculateProportion()?.ratio.toLocaleString(undefined, {
+                maximumFractionDigits: 2,
+              })}
+            </span>{' '}
+            times larger than {calculateProportion()?.smallerItem.name}.
+          </p>
+        </div>
+      )}
+
       <div className={styles.scaleWrapper}>
         <div className={styles.scale} style={{ height: scaleHeight }}>
           {/* Render major ticks */}
@@ -380,12 +431,20 @@ export const App: React.FC = () => {
               }
             }
 
+            const isSelected =
+              item.name === firstSelectedItem?.name ||
+              item.name === secondSelectedItem?.name;
+
             return (
               <div
-                className={styles.dataPoint}
                 key={item.name}
                 style={{ top: position }}
                 title={`${item.name}: ${item.size.toExponential(2)} ${item.unit}`}
+                className={cn(
+                  styles.dataPoint,
+                  isSelected && styles.isSelected,
+                )}
+                onClick={() => handleItemClick(item)}
               >
                 <div className={styles.marker} />
                 <div className={styles.label}>
