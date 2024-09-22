@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { Container } from '../container';
 
 import styles from './app.module.css'; // We'll define styles here
@@ -208,7 +210,6 @@ function formatSize(sizeInMeters: number): string {
     return `${sizeInMeters.toExponential(2)} meters`;
   }
 }
-
 export const App: React.FC = () => {
   // Calculate logarithms of sizes
   const logData = data.map(item => ({
@@ -218,29 +219,81 @@ export const App: React.FC = () => {
 
   // Find min and max log sizes
   const logSizes = logData.map(item => item.logSize);
-  const minLogSize = Math.min(...logSizes);
-  const maxLogSize = Math.max(...logSizes);
+  const minLogSize = Math.floor(Math.min(...logSizes));
+  const maxLogSize = Math.ceil(Math.max(...logSizes));
 
-  // Define the scale height in pixels
-  const scaleHeight = 3800;
+  // State to track expanded ranges
+  const [expandedRanges, setExpandedRanges] = useState<
+    Array<{ end: number; start: number }>
+  >([]);
 
   // Generate major ticks at integer powers of ten within the range
-  const minPower = Math.floor(minLogSize);
-  const maxPower = Math.ceil(maxLogSize);
-
   const ticks = [];
-
-  for (let i = maxPower; i >= minPower; i--) {
+  for (let i = maxLogSize; i >= minLogSize; i--) {
     ticks.push(i);
+  }
+
+  // Define heights for intervals
+  const defaultIntervalHeight = 60; // Height in pixels for non-expanded intervals
+  const expandedIntervalHeight = 600; // Height in pixels for expanded intervals
+
+  // Build intervals array
+  const intervals: Array<{
+    endTick: number;
+    height: number;
+    isExpanded: boolean;
+    startTick: number;
+  }> = [];
+
+  for (let i = 0; i < ticks.length - 1; i++) {
+    const startTick = ticks[i];
+    const endTick = ticks[i + 1];
+
+    const isExpanded = expandedRanges.some(
+      range => range.start === startTick && range.end === endTick,
+    );
+
+    intervals.push({
+      endTick,
+      height: isExpanded ? expandedIntervalHeight : defaultIntervalHeight,
+      isExpanded,
+      startTick,
+    });
+  }
+
+  // Calculate cumulative heights and total scale height
+  const cumulativeHeights = [0]; // Start with zero at the top
+  intervals.forEach((interval, index) => {
+    cumulativeHeights.push(cumulativeHeights[index] + interval.height);
+  });
+  const scaleHeight = cumulativeHeights[cumulativeHeights.length - 1];
+
+  // Map ticks to their positions
+  const tickPositions: { [key: number]: number } = {};
+  ticks.forEach((tick, index) => {
+    tickPositions[tick] = cumulativeHeights[index];
+  });
+
+  // Helper function to generate minor ticks
+  function minorTicksBetween(startTick: number, endTick: number) {
+    const minorTicks = [];
+    const step = 0.1;
+    let t = startTick - step;
+    while (t > endTick + 1e-6) {
+      // adjust for floating point precision
+      minorTicks.push(Number(t.toFixed(1)));
+      t -= step;
+    }
+    return minorTicks;
   }
 
   return (
     <Container>
       <div className={styles.scaleWrapper}>
         <div className={styles.scale} style={{ height: scaleHeight }}>
+          {/* Render major ticks */}
           {ticks.map(tick => {
-            const position =
-              ((maxLogSize - tick) / (maxLogSize - minLogSize)) * scaleHeight;
+            const position = tickPositions[tick];
 
             return (
               <div className={styles.tick} key={tick} style={{ top: position }}>
@@ -252,10 +305,81 @@ export const App: React.FC = () => {
             );
           })}
 
+          {/* Render intervals with expand buttons or minor ticks */}
+          {intervals.map(interval => {
+            const startPosition = tickPositions[interval.startTick];
+            // const endPosition = tickPositions[interval.endTick];
+
+            const intervalTop = startPosition;
+            const intervalHeight = interval.height;
+
+            const intervalMiddle = intervalTop + intervalHeight / 2;
+
+            if (interval.isExpanded) {
+              // Render minor ticks within the expanded interval
+              const minorTicks = minorTicksBetween(
+                interval.startTick,
+                interval.endTick,
+              );
+              return minorTicks.map(minorTick => {
+                const relativePosition =
+                  ((interval.startTick - minorTick) /
+                    (interval.startTick - interval.endTick)) *
+                  intervalHeight;
+                const position = intervalTop + relativePosition;
+
+                return (
+                  <div
+                    className={styles.tick}
+                    key={`minor-${minorTick}`}
+                    style={{ top: position }}
+                  >
+                    <div className={styles.tickLabel}>
+                      10<sup>{minorTick.toFixed(1)}</sup> m
+                    </div>
+                    <div className={styles.tickLine} />
+                  </div>
+                );
+              });
+            } else {
+              // Render expand button
+              return (
+                <div
+                  className={styles.expandButton}
+                  key={`expand-${interval.startTick}-${interval.endTick}`}
+                  style={{ top: intervalMiddle }}
+                  onClick={() => {
+                    setExpandedRanges([
+                      ...expandedRanges,
+                      { end: interval.endTick, start: interval.startTick },
+                    ]);
+                  }}
+                >
+                  +
+                </div>
+              );
+            }
+          })}
+
+          {/* Render data points */}
           {logData.map(item => {
-            const position =
-              ((maxLogSize - item.logSize) / (maxLogSize - minLogSize)) *
-              scaleHeight;
+            // Find the interval where the data point falls
+            let position = 0;
+            for (let i = 0; i < intervals.length; i++) {
+              const interval = intervals[i];
+              if (
+                item.logSize <= interval.startTick &&
+                item.logSize >= interval.endTick
+              ) {
+                const relativePosition =
+                  ((interval.startTick - item.logSize) /
+                    (interval.startTick - interval.endTick)) *
+                  interval.height;
+                position = tickPositions[interval.startTick] + relativePosition;
+                break;
+              }
+            }
+
             return (
               <div
                 className={styles.dataPoint}

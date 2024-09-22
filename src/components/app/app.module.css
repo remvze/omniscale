@@ -53,3 +53,13 @@
     color: var(--color-foreground-subtler);
   }
 }
+
+.expandButton {
+  position: absolute;
+  width: 100%;
+  font-size: var(--font-2xsm);
+  color: var(--color-foreground-subtler);
+  text-align: center;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
