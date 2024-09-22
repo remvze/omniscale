@@ -37,10 +37,6 @@ const humanTimeline: Array<TimelineEvent> = [
     year: 1953,
   },
   {
-    label: 'Founding of the United Nations',
-    year: 1945,
-  },
-  {
     label: 'World War II Ends',
     year: 1945,
   },

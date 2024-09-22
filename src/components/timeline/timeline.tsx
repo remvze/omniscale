@@ -57,7 +57,11 @@ export const Timeline: React.FC<TimelineProps> = ({
             >
               <span className={styles.dash}>—</span> {event.label}{' '}
               <span className={styles.years}>
-                ({event.year > 0 ? event.year : `${event.year} BCE`})
+                (
+                {event.year > 0
+                  ? event.year
+                  : `${(-event.year).toLocaleString()} BCE`}
+                )
               </span>
               {index < sortedEvents.length - 1 && (
                 <button
