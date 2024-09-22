@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { cn } from '@/helpers/styles';
 import { Container } from '../container';
@@ -12,6 +13,8 @@ interface Data {
 }
 
 export function App() {
+  const [visibleItems, setVisibleItems] = useState(1);
+
   const data: Array<Data> = [
     {
       name: 'Observable Universe',
@@ -85,17 +88,28 @@ export function App() {
     },
   ];
 
+  useEffect(() => {
+    if (visibleItems < data.length) {
+      const timeout = setTimeout(() => {
+        setVisibleItems(prev => prev + 1);
+      }, 1500); // Adjust the delay as needed
+      return () => clearTimeout(timeout);
+    }
+  }, [visibleItems, data.length]);
+
   return (
     <Container>
       <div className={styles.proportions}>
-        {data.slice(0, -1).map((item, index) => (
-          <Proportion
-            bigger={item}
-            index={index}
-            key={index}
-            smaller={data[index + 1]}
-          />
-        ))}
+        <AnimatePresence>
+          {data.slice(0, visibleItems - 1).map((item, index) => (
+            <Proportion
+              bigger={item}
+              index={index}
+              key={index}
+              smaller={data[index + 1]}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </Container>
   );
@@ -163,11 +177,16 @@ interface ProportionProps {
   smaller: Data;
 }
 
-function Proportion({ bigger, index, smaller }: ProportionProps) {
+function Proportion({ bigger, smaller }: ProportionProps) {
   const percentage = (smaller.size / bigger.size) * 100;
 
   return (
-    <div className={styles.proportion}>
+    <motion.div
+      animate={{ filter: 'blur(0)', opacity: 1, scale: 1 }}
+      className={styles.proportion}
+      initial={{ filter: 'blur(10px)', opacity: 0, scale: 1.1 }}
+      transition={{ duration: 0.5, ease: 'easeInOut' }}
+    >
       <p className={cn(styles.name, styles.biggerName)}>
         {bigger.name} <span>{formatSize(bigger.size)}</span>
       </p>
@@ -177,7 +196,7 @@ function Proportion({ bigger, index, smaller }: ProportionProps) {
           className={styles.filled}
           initial={{ width: '100%' }}
           transition={{
-            delay: 0.2 * index + 0.2,
+            delay: 0.3,
             duration: 1,
             ease: 'easeInOut',
           }}
@@ -187,12 +206,12 @@ function Proportion({ bigger, index, smaller }: ProportionProps) {
         <motion.span
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
-          transition={{ delay: 0.2 * index + 0.5, duration: 0.5 }}
+          transition={{ delay: 0.5, duration: 0.5 }}
         >
           % {parseFloat(percentage.toPrecision(1))}
         </motion.span>{' '}
         {smaller.name}
       </p>
-    </div>
+    </motion.div>
   );
 }
