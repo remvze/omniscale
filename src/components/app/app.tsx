@@ -11,6 +11,69 @@ type Data = {
   unit: string;
 };
 
+function formatPercentage(num: number, significantDigits = 2) {
+  if (typeof num !== 'number' || isNaN(num)) {
+    return 'Invalid proportion value';
+  }
+
+  if (num === 0) return '0%';
+
+  // Convert number to absolute value for processing
+  const absNum = Math.abs(num);
+
+  // Determine the exponent (power of 10)
+  const exponent = Math.floor(Math.log10(absNum));
+
+  // Calculate the factor to truncate the number to the desired significant digits
+  const factor = Math.pow(10, exponent - significantDigits + 1);
+
+  // Truncate the number (does not round)
+  const truncatedNum = Math.floor(absNum / factor) * factor;
+
+  // Convert back to the original sign
+  const finalNum = num < 0 ? -truncatedNum : truncatedNum;
+
+  // Convert the number to fixed-point notation without exponential notation
+  let fixedStr = finalNum.toFixed(
+    Math.max(0, -exponent + significantDigits - 1),
+  );
+
+  // Remove any trailing zeros after the decimal point
+  fixedStr = fixedStr.replace(/\.?0+$/, '');
+
+  return `${truncateMiddle(fixedStr, 20)}%`;
+}
+
+function truncateMiddle(input: string, maxLength: number): string {
+  // Validate input parameters
+  if (maxLength < 1) {
+    throw new Error('maxLength must be at least 1.');
+  }
+
+  if (input.length <= maxLength) {
+    return input;
+  }
+
+  // The length of the ellipsis
+  const ellipsis = '...';
+  const ellipsisLength = ellipsis.length;
+
+  if (maxLength <= ellipsisLength) {
+    // If maxLength is less than or equal to ellipsis length, return a truncated ellipsis
+    return ellipsis.substring(0, maxLength);
+  }
+
+  // Calculate the number of characters to show on each side
+  const charsToShow = maxLength - ellipsisLength;
+  const frontChars = Math.ceil(charsToShow / 2);
+  const endChars = Math.floor(charsToShow / 2);
+
+  const front = input.substring(0, frontChars);
+  const end = input.substring(input.length - endChars);
+
+  return front + ellipsis + end;
+}
+
 const data: Array<Data> = [
   {
     name: 'Observable Universe',
@@ -235,8 +298,8 @@ export const App: React.FC = () => {
   }
 
   // Define heights for intervals
-  const defaultIntervalHeight = 60; // Height in pixels for non-expanded intervals
-  const expandedIntervalHeight = 600; // Height in pixels for expanded intervals
+  const defaultIntervalHeight = 75; // Height in pixels for non-expanded intervals
+  const expandedIntervalHeight = 750; // Height in pixels for expanded intervals
 
   // Build intervals array
   const intervals: Array<{
@@ -310,14 +373,14 @@ export const App: React.FC = () => {
     if (firstSelectedItem && secondSelectedItem) {
       const size1 = firstSelectedItem.size;
       const size2 = secondSelectedItem.size;
+      const min = Math.min(size1, size2);
+      const max = Math.max(size1, size2);
 
-      const ratio = size1 / size2;
-      const inverseRatio = size2 / size1;
+      const percent = (min / max) * 100;
 
       return {
-        inverseRatio,
         largerItem: size1 >= size2 ? firstSelectedItem : secondSelectedItem,
-        ratio,
+        percent,
         smallerItem: size1 < size2 ? firstSelectedItem : secondSelectedItem,
       };
     }
@@ -329,13 +392,11 @@ export const App: React.FC = () => {
       {firstSelectedItem && secondSelectedItem && (
         <div className={styles.proportionDisplay}>
           <p>
-            {calculateProportion()?.largerItem.name} is{' '}
+            {calculateProportion()?.smallerItem.name} is{' '}
             <span>
-              {calculateProportion()?.ratio.toLocaleString(undefined, {
-                maximumFractionDigits: 2,
-              })}
+              {formatPercentage(calculateProportion()?.percent as number)}
             </span>{' '}
-            times larger than {calculateProportion()?.smallerItem.name}.
+            of {calculateProportion()?.largerItem.name}.
           </p>
         </div>
       )}
