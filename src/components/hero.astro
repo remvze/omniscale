@@ -1,0 +1,29 @@
+---
+import { Container } from './container';
+---
+
+<Container>
+  <section class="hero">
+    <h1>Omniscale</h1>
+    <p>From galaxies to atoms—where are you?</p>
+  </section>
+</Container>
+
+<style>
+  .hero {
+    padding: 100px 0 72px;
+
+    & h1 {
+      font-family: var(--font-display);
+      font-size: var(--font-lg);
+      font-weight: 700;
+    }
+
+    & p {
+      margin-top: 4px;
+      font-size: var(--font-sm);
+      line-height: 1.6;
+      color: var(--color-foreground-subtle);
+    }
+  }
+</style>

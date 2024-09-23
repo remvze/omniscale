@@ -34,11 +34,11 @@
   font-display: swap;
 }
 
-/* libre-baskerville-700 - latin */
+/* playfair-display-700 - latin */
 @font-face {
-  font-family: 'Libre Baskerville';
+  font-family: 'Playfair Display';
   font-style: normal;
   font-weight: 700;
-  src: url('/fonts/libre-baskerville-v14-latin-700.woff2') format('woff2');
+  src: url('/fonts/playfair-display-v37-latin-700.woff2') format('woff2');
   font-display: swap;
 }
