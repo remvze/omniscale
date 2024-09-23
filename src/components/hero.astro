@@ -12,7 +12,8 @@ import { Container } from './container';
       width="30"
     />
     <h1>Omniscale</h1>
-    <p>From galaxies to atoms—where are you?</p>
+    <p class="desc">From galaxies to atoms—where are you?</p>
+    <p class="instruction">Select two to compare their proportions.</p>
   </section>
 </Container>
 
@@ -33,11 +34,18 @@ import { Container } from './container';
       font-weight: 700;
     }
 
-    & p {
+    & .desc {
       margin-top: 4px;
       font-size: var(--font-sm);
       line-height: 1.6;
       color: var(--color-foreground-subtle);
+    }
+
+    & .instruction {
+      margin-top: 4px;
+      font-size: var(--font-xsm);
+      line-height: 1.6;
+      color: var(--color-foreground-subtler);
     }
   }
 </style>
