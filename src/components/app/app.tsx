@@ -41,7 +41,7 @@ function formatPercentage(num: number, significantDigits = 2) {
   // Remove any trailing zeros after the decimal point
   fixedStr = fixedStr.replace(/\.?0+$/, '');
 
-  return `${truncateMiddle(fixedStr, 20)}%`;
+  return `${fixedStr}%`;
 }
 
 function truncateMiddle(input: string, maxLength: number): string {
@@ -391,12 +391,46 @@ export const App: React.FC = () => {
     <Container>
       {firstSelectedItem && secondSelectedItem && (
         <div className={styles.proportionDisplay}>
-          <p>
+          {/* <p>
             {calculateProportion()?.smallerItem.name} is{' '}
             <span>
               {formatPercentage(calculateProportion()?.percent as number)}
             </span>{' '}
             of {calculateProportion()?.largerItem.name}.
+          </p> */}
+
+          <p className={cn(styles.text, styles.top)}>
+            <span className={styles.label}>
+              {calculateProportion()?.largerItem.name}
+            </span>
+
+            <span className={styles.num}>
+              {formatSize(calculateProportion()?.largerItem.size as number)}
+            </span>
+          </p>
+
+          <div className={styles.line}>
+            <div
+              className={styles.filled}
+              style={{
+                width: formatPercentage(
+                  calculateProportion()?.percent as number,
+                ),
+              }}
+            />
+          </div>
+
+          <p className={cn(styles.text, styles.bottom)}>
+            <span className={styles.num}>
+              {truncateMiddle(
+                formatPercentage(calculateProportion()?.percent as number),
+                20,
+              )}
+            </span>
+
+            <span className={styles.label}>
+              {calculateProportion()?.smallerItem.name}
+            </span>
           </p>
         </div>
       )}
