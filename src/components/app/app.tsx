@@ -3,8 +3,9 @@ import { IoIosClose } from 'react-icons/io';
 
 import { Container } from '../container';
 
-import styles from './app.module.css'; // We'll define styles here
 import { cn } from '@/helpers/styles';
+
+import styles from './app.module.css';
 
 type Data = {
   name: string;
@@ -13,58 +14,35 @@ type Data = {
 };
 
 function formatPercentage(num: number, significantDigits = 2) {
-  if (typeof num !== 'number' || isNaN(num)) {
-    return 'Invalid proportion value';
-  }
-
   if (num === 0) return '0%';
 
-  // Convert number to absolute value for processing
   const absNum = Math.abs(num);
-
-  // Determine the exponent (power of 10)
   const exponent = Math.floor(Math.log10(absNum));
-
-  // Calculate the factor to truncate the number to the desired significant digits
   const factor = Math.pow(10, exponent - significantDigits + 1);
-
-  // Truncate the number (does not round)
   const truncatedNum = Math.floor(absNum / factor) * factor;
-
-  // Convert back to the original sign
   const finalNum = num < 0 ? -truncatedNum : truncatedNum;
 
-  // Convert the number to fixed-point notation without exponential notation
   let fixedStr = finalNum.toFixed(
     Math.max(0, -exponent + significantDigits - 1),
   );
 
-  // Remove any trailing zeros after the decimal point
   fixedStr = fixedStr.replace(/\.?0+$/, '');
 
   return `${fixedStr}%`;
 }
 
 function truncateMiddle(input: string, maxLength: number): string {
-  // Validate input parameters
-  if (maxLength < 1) {
-    throw new Error('maxLength must be at least 1.');
-  }
-
   if (input.length <= maxLength) {
     return input;
   }
 
-  // The length of the ellipsis
   const ellipsis = '...';
   const ellipsisLength = ellipsis.length;
 
   if (maxLength <= ellipsisLength) {
-    // If maxLength is less than or equal to ellipsis length, return a truncated ellipsis
     return ellipsis.substring(0, maxLength);
   }
 
-  // Calculate the number of characters to show on each side
   const charsToShow = maxLength - ellipsisLength;
   const frontChars = Math.ceil(charsToShow / 2);
   const endChars = Math.floor(charsToShow / 2);
@@ -328,13 +306,16 @@ export const App: React.FC = () => {
 
   // Calculate cumulative heights and total scale height
   const cumulativeHeights = [0]; // Start with zero at the top
+
   intervals.forEach((interval, index) => {
     cumulativeHeights.push(cumulativeHeights[index] + interval.height);
   });
+
   const scaleHeight = cumulativeHeights[cumulativeHeights.length - 1];
 
   // Map ticks to their positions
   const tickPositions: { [key: number]: number } = {};
+
   ticks.forEach((tick, index) => {
     tickPositions[tick] = cumulativeHeights[index];
   });
@@ -361,10 +342,11 @@ export const App: React.FC = () => {
   const handleItemClick = (item: Data) => {
     if (!firstSelectedItem) {
       setFirstSelectedItem(item);
-    } else if (!secondSelectedItem && item !== firstSelectedItem) {
+    } else if (!secondSelectedItem && item.name === firstSelectedItem.name) {
+      setFirstSelectedItem(null);
+    } else if (!secondSelectedItem) {
       setSecondSelectedItem(item);
     } else {
-      // Reset selection if the same item is clicked again or both items are already selected
       setFirstSelectedItem(item);
       setSecondSelectedItem(null);
     }
