@@ -4,6 +4,13 @@ import { Container } from './container';
 
 <Container>
   <section class="hero">
+    <img
+      alt="Omniscale Logo"
+      class="logo"
+      height="30"
+      src="/logo.svg"
+      width="30"
+    />
     <h1>Omniscale</h1>
     <p>From galaxies to atoms—where are you?</p>
   </section>
@@ -12,6 +19,13 @@ import { Container } from './container';
 <style>
   .hero {
     padding: 100px 0 72px;
+
+    & .logo {
+      display: block;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 16px;
+    }
 
     & h1 {
       font-family: var(--font-display);
