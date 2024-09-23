@@ -83,6 +83,29 @@
   border-radius: 12px;
   transform: translateX(-50%);
 
+  & button {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--color-foreground-subtle);
+    cursor: pointer;
+    background-color: var(--color-neutral-100);
+    border: none;
+    border-radius: 50%;
+    outline: none;
+    transition: 0.2s;
+
+    &:hover {
+      color: var(--color-foreground);
+      background-color: var(--color-neutral-200);
+    }
+  }
+
   & .text {
     display: flex;
     align-items: center;

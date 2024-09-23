@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { IoIosClose } from 'react-icons/io';
 
 import { Container } from '../container';
 
@@ -391,13 +392,14 @@ export const App: React.FC = () => {
     <Container>
       {firstSelectedItem && secondSelectedItem && (
         <div className={styles.proportionDisplay}>
-          {/* <p>
-            {calculateProportion()?.smallerItem.name} is{' '}
-            <span>
-              {formatPercentage(calculateProportion()?.percent as number)}
-            </span>{' '}
-            of {calculateProportion()?.largerItem.name}.
-          </p> */}
+          <button
+            onClick={() => {
+              setFirstSelectedItem(null);
+              setSecondSelectedItem(null);
+            }}
+          >
+            <IoIosClose />
+          </button>
 
           <p className={cn(styles.text, styles.top)}>
             <span className={styles.label}>
