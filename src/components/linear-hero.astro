@@ -1,0 +1,63 @@
+---
+import { Container } from './container';
+
+const earthSize = 12742e3;
+const factor = 4_000_000_000_000;
+---
+
+<Container>
+  <section class="hero">
+    <img
+      alt="Omniscale Logo"
+      class="logo"
+      height="30"
+      src="/logo.svg"
+      width="30"
+    />
+    <h1>Linear Scale</h1>
+    <p class="desc">Scale from Earth to the observable universe.</p>
+    <p class="scale">
+      <span>1</span> Pixel = <span
+        >{((earthSize * factor) / 1000).toLocaleString()}</span
+      > Kilometres.
+    </p>
+  </section>
+</Container>
+
+<style>
+  .hero {
+    padding: 100px 0 72px;
+
+    & .logo {
+      display: block;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 16px;
+    }
+
+    & h1 {
+      font-family: var(--font-display);
+      font-size: var(--font-lg);
+      font-weight: 700;
+    }
+
+    & .desc {
+      margin-top: 4px;
+      font-size: var(--font-sm);
+      line-height: 1.6;
+      color: var(--color-foreground-subtle);
+    }
+
+    & .scale {
+      margin-top: 4px;
+      font-size: var(--font-xsm);
+      line-height: 1.6;
+      color: var(--color-foreground-subtler);
+
+      & span {
+        font-family: var(--font-mono);
+        color: var(--color-foreground-subtle);
+      }
+    }
+  }
+</style>

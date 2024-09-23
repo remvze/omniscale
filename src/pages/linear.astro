@@ -1,10 +1,10 @@
 ---
 import Layout from '@/layouts/layout.astro';
 import { Linear as LinearScale } from '@/components/linear';
-import Hero from '@/components/hero.astro';
+import LinearHero from '@/components/linear-hero.astro';
 ---
 
-<Layout>
-  <Hero />
+<Layout title="Linear Scale: From Earth to the Universe">
+  <LinearHero />
   <LinearScale client:load />
 </Layout>
