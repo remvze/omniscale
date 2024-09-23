@@ -6,7 +6,7 @@
   .scale {
     position: relative;
     width: 2px;
-    background-color: var(--color-neutral-100);
+    background-color: var(--color-neutral-200);
 
     & .object {
       position: absolute;

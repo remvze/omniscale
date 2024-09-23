@@ -93,7 +93,7 @@ export function Linear() {
             <div className={styles.color} />
 
             <span className={styles.name}>
-              Earth <span>x4,000,000,000</span>
+              Earth <span>x{factor.toLocaleString()}</span>
             </span>
           </div>
 
@@ -123,6 +123,15 @@ export function Linear() {
               <span className={styles.name}>{object.name}</span>
             </div>
           ))}
+
+          <div className={styles.label}>
+            <div
+              className={styles.color}
+              style={{ background: 'var(--color-neutral-200)' }}
+            />
+
+            <span className={styles.name}>Observable Universe</span>
+          </div>
         </div>
       </div>
     </Container>
