@@ -1,0 +1,49 @@
+---
+interface Props {
+  active: 'linear' | 'logarithmic';
+}
+
+const { active } = Astro.props;
+---
+
+<div class="scales">
+  <div class="box">
+    <a class:list={{ active: active === 'logarithmic' }} href="/">Logarithmic</a
+    >
+    <a class:list={{ active: active === 'linear' }} href="/linear">Linear</a>
+  </div>
+</div>
+
+<style>
+  .scales {
+    margin-top: 24px;
+
+    & .box {
+      display: inline-flex;
+      column-gap: 4px;
+      align-items: center;
+      height: 40px;
+      padding: 4px;
+      border: 1px solid var(--color-neutral-100);
+      border-radius: 1000px;
+
+      & a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        padding: 0 16px;
+        font-size: var(--font-xsm);
+        color: var(--color-foreground-subtle);
+        text-decoration: none;
+        border-radius: 1000px;
+
+        &.active {
+          font-weight: 500;
+          color: var(--color-foreground);
+          background-color: var(--color-neutral-100);
+        }
+      }
+    }
+  }
+</style>
