@@ -1,0 +1,1 @@
+export { Linear } from './linear';
