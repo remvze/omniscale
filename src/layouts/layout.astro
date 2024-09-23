@@ -8,10 +8,12 @@ interface Props {
 }
 
 const title = Astro.props.title
-  ? `${Astro.props.title} — The Timeline`
-  : 'The Timeline of the Universe';
+  ? `${Astro.props.title} — Omniscale`
+  : 'Omniscale: The Scale of Everything in the Universe';
 
-const description = Astro.props.description || 'The timeline of the universe.';
+const description =
+  Astro.props.description ||
+  'This scale shows the size of everything in the universe, from the largest galaxies to the smallest particles.';
 
 const og = Astro.props.og || '/og.png';
 ---
@@ -31,10 +33,10 @@ const og = Astro.props.og || '/og.png';
 
     <meta content={title} property="og:title" />
     <meta content={description} property="og:description" />
-    <meta content="The Timeline" property="og:site_name" />
-    <meta content="https://timeline.mvze.net/" property="og:url" />
+    <meta content="Omniscale" property="og:site_name" />
+    <meta content="https://omniscale.mvze.net/" property="og:url" />
     <meta content="website" property="og:type" />
-    <meta content={`https://timeline.mvze.net${og}`} property="og:image" />
+    <meta content={`https://omniscale.mvze.net${og}`} property="og:image" />
 
     <link href="/sitemap-index.xml" rel="sitemap" />
   </head>

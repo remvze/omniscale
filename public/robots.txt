@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://timeline.mvze.net/sitemap-index.xml
+Sitemap: https://omniscale.mvze.net/sitemap-index.xml

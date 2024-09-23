@@ -1,6 +1,6 @@
 services:
   timesy:
-    image: ghcr.io/remvze/timeline
+    image: ghcr.io/remvze/omniscale
     logging:
       options:
         max-size: 1g

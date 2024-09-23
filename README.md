@@ -1,5 +1,5 @@
 <div align="center">
-  <h2>The Timeline</h2>
-  <p>The timeline of the universe.</p>
-  <a href="https://timeline.mvze.net/">Visit <strong>Timeline</strong></a> | <a href="https://buymeacoffee.com/remvze">Buy Me a Coffee</a>
+  <h2>Omniscale</h2>
+  <p>The scale of everything in the universe.</p>
+  <a href="https://omniscale.mvze.net/">Visit <strong>Omniscale</strong></a> | <a href="https://buymeacoffee.com/remvze">Buy Me a Coffee</a>
 </div>
