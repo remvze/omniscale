@@ -424,7 +424,7 @@ export const App: React.FC = () => {
             <span className={styles.num}>
               {truncateMiddle(
                 formatPercentage(calculateProportion()?.percent as number),
-                20,
+                28,
               )}
             </span>
 
