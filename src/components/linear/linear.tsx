@@ -1,6 +1,61 @@
+import { useEffect, useState, useRef, useMemo } from 'react';
+
 import { Container } from '../container';
 
 import styles from './linear.module.css';
+
+function formatSize(sizeInMeters: number): string {
+  if (sizeInMeters >= 9.461e15) {
+    const lightYears = sizeInMeters / 9.461e15;
+    return `${lightYears.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} light-years`;
+  } else if (sizeInMeters >= 1e3) {
+    const kilometers = sizeInMeters / 1e3;
+    return `${kilometers.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} km`;
+  } else if (sizeInMeters >= 1) {
+    return `${sizeInMeters.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} meters`;
+  } else if (sizeInMeters >= 1e-3) {
+    const millimeters = sizeInMeters * 1e3;
+    return `${millimeters.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} mm`;
+  } else if (sizeInMeters >= 1e-6) {
+    const micrometers = sizeInMeters * 1e6;
+    return `${micrometers.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} µm`;
+  } else if (sizeInMeters >= 1e-9) {
+    const nanometers = sizeInMeters * 1e9;
+    return `${nanometers.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} nm`;
+  } else if (sizeInMeters >= 1e-12) {
+    const picometers = sizeInMeters * 1e12;
+    return `${picometers.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} pm`;
+  } else if (sizeInMeters >= 1e-15) {
+    const femtometers = sizeInMeters * 1e15;
+    return `${femtometers.toLocaleString(undefined, {
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2,
+    })} fm`;
+  } else {
+    return `${sizeInMeters.toExponential(2)} meters`;
+  }
+}
 
 type Data = {
   color: string;
@@ -46,9 +101,38 @@ export function Linear() {
 
   const height = universeSize / earthSize / factor;
 
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [pixels, setPixels] = useState(0);
+  const scrolled = useMemo(
+    () => formatSize(pixels * earthSize * factor),
+    [pixels],
+  );
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (wrapperRef.current) {
+        const wrapperTop =
+          wrapperRef.current.getBoundingClientRect().top + window.scrollY;
+
+        const scrolledFromWrapperTop = window.scrollY - wrapperTop;
+
+        if (scrolledFromWrapperTop < 0) setPixels(0);
+        else setPixels(scrolledFromWrapperTop);
+      }
+    };
+
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <Container>
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} ref={wrapperRef}>
         <div
           className={styles.scale}
           style={{
@@ -132,6 +216,12 @@ export function Linear() {
 
             <span className={styles.name}>Observable Universe</span>
           </div>
+
+          {pixels > 0 && (
+            <div className={styles.scrolled}>
+              <span>{scrolled}</span> scrolled.
+            </div>
+          )}
         </div>
       </div>
     </Container>

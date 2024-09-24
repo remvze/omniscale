@@ -51,5 +51,16 @@
         }
       }
     }
+
+    & .scrolled {
+      margin-top: 12px;
+      font-size: var(--font-2xsm);
+      color: var(--color-foreground-subtle);
+
+      & span {
+        font-family: var(--font-mono);
+        color: var(--color-foreground);
+      }
+    }
   }
 }
