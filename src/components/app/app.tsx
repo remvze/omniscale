@@ -405,7 +405,10 @@ export const App: React.FC = () => {
           </div>
 
           <p className={cn(styles.text, styles.bottom)}>
-            <span className={styles.num}>
+            <span
+              className={styles.num}
+              title={formatPercentage(calculateProportion()?.percent as number)}
+            >
               {truncateMiddle(
                 formatPercentage(calculateProportion()?.percent as number),
                 28,
